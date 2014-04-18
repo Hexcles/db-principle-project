@@ -1,0 +1,29 @@
+body {
+    padding-bottom: 20px;
+    padding-top: 60px;
+}
+
+.jumbotron h1 {
+    font-size: 50px !important;
+}
+
+#contentInput {
+    height: 300px;
+}
+
+#board-title-th {
+    min-width: 55%;
+}
+
+.post-id {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#reply-area {
+    margin-top: 30px;
+}
+
+.footer {
+    color: #777;
+}
