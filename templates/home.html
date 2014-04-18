@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+            <h1>谜の匿名版</h1>
+            <p>这是一个完全匿名的讨论版。每个访客将会得到一个唯一的8位ID，还可以设置一个昵称。session 记录在 cookies 中，默认保存一年。如果需要更换身份，请直接删除本站的 cookies 即可。</p>
+            <p><a class="btn btn-default pull-right" href="{{ url_for('new_session') }}">使用新身份</a></p>
+        </div>
+    </div>
+</div>
+<div class="container">
+    {% for board in boards %}
+        {% if loop.index % 3 == 1 and loop.index <= loop.length %}
+        <div class="row">
+        {% endif %}
+        <div class="col-sm-4">
+            <h2>{{ board.name }}</h2>
+            <p>{{ board.introduction }}</p>
+            <p><a role="button" href="{{ url_for('view_board', board_id=board.id) }}" class="btn btn-default">进入 »</a></p>
+        </div>
+        {% if loop.index % 3 == 0 or loop.index == loop.length %}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

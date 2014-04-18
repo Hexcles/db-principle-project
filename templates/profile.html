@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+    <div class="page-header">
+        <h3>修改个人信息</h3>
+    </div>
+    <form method="POST" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="nicknameInput">昵称</label>
+            <div class="col-sm-10">
+                <input name="nickname" class="form-control" id="nicknameInput">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input class="btn btn-default" type="submit" value="提交">
+            </div>
+        </div>
+    </form>
+    <div class="page-header">
+        <h3>你所发布的帖子</h3>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>板块</th><th>串ID</th><th>帖子ID</th><th id="board-title-th">标题</th><th>发布时间</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for thread in threads %}
+        <tr>
+            <td><a href="{{ url_for('view_board', board_id=thread.board_id) }}">{{ thread.board_name }}</a></td>
+            <td>{{ thread.thread_id }}</td>
+            <td>{{ thread.post_id }}</td>
+            <td><a href="{{ url_for('thread', thread_id=thread.thread_id) }}">{{ thread.title }}</a></td>
+            <td>{{ thread.timestamp }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

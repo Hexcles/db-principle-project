@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>谜の匿名版</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<!--navbar-->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ url_for('home') }}">谜の匿名版</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="nav-home"><a href="{{ url_for('home') }}">首页</a></li>
+                <li class="nav-view"><a href="{{ url_for('home') }}">阅读讨论</a></li>
+                <li class="nav-profile"><a href="{{ url_for('profile') }}">个人中心</a></li>
+                <li class="nav-about"><a href="{{ url_for('about') }}">关于</a></li>
+            </ul>
+            <p class="navbar-text navbar-right">{{ g._user['show_id'] }} ({{ g._user['nickname'] }})</p>
+        </div><!--/.nav-collapse -->
+    </div>
+</div>
+<!--breadcrumb-->
+{% if g.breadcrumb %}
+<div class="container">
+    <div class="row">
+        <ol class="breadcrumb">
+            {% for item in g.breadcrumb %}
+            {% if loop.index == loop.length %}
+            <li class="active">{{ item.name }}</li>
+            {% else %}
+            <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+            {% endif %}
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+{% endif %}
+<!--flashing message-->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="container">
+    {% for category, message in messages %}
+    <div class="row">
+        <div class="alert alert-dismissable alert-{{ category }}">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+{% block body %}{% endblock %}
+
+<footer class="footer">
+    <hr>
+    <div class="container">
+        <p>Author: Hexcles Ma (<a href="https://github.com/Hexcles/db-principle-project" target="_blank">Github</a>) <a href="{{ url_for('admin') }}">Admin</a></p>
+    </div>
+</footer>
+<script src="{{ url_for('static', filename='js/jquery-2.1.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<script> $("li.nav-{{ g.current_page }}").addClass("active"); </script>
+</body>
+</html>

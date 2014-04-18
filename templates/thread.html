@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+    <div class="page-header">
+        <h2>{{ threads[0].title }}</h2>
+    </div>
+    {% for thread in threads %}
+    <div class="row">
+        <div class="col-sm-3">
+            <p class="post-id"><strong>帖子ID：</strong>{{ thread.post_id }}</p>
+            <p><strong>发帖用户：</strong><span class="username">{{ thread.user_show_id }} ({{ thread.nickname }})</span></p>
+            <p><strong>发帖时间：</strong><span class="timestamp">{{ thread.timestamp }}</span></p>
+        </div>
+        <div class="col-sm-9">
+            <h3>{{ thread.title }}</h3>
+            {{ thread.content|nl2br }}
+        </div>
+    </div>
+    <hr>
+    {% endfor %}
+    <div class="row panel panel-default" id="reply-area">
+        <div class="panel-heading">回复本串</div>
+        <form method="POST" class="form-horizontal panel-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="titleInput">标题</label>
+                <div class="col-sm-10">
+                    <input name="title" class="form-control" id="titleInput">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="contentInput">内容</label>
+                <div class="col-sm-10">
+                    <textarea name="content" class="form-control" id="contentInput"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input class="btn btn-default" type="submit" value="提交">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

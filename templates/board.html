@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="jumbotron">
+            <h1>{{ board.name }}</h1>
+            <p>{{ board.introduction }}</p>
+            <p><a href="{{ url_for('new_thread', board_id=board.id) }}" class="btn btn-primary">发布新串</a></p>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>串ID</th><th id="board-title-th">标题</th><th>发帖人</th><th>发布时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for thread in threads %}
+                <tr>
+                    <td>{{ thread.thread_id }}</td>
+                    <td><a href="{{ url_for('thread', thread_id=thread.thread_id) }}">{{ thread.title }}</a></td>
+                    <td>{{ thread.user_show_id }} ({{ thread.nickname }})</td>
+                    <td>{{ thread.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
