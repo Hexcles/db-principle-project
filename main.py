@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response, g, Response, url_for, flash, redirect
+from flask import Flask, render_template, request, make_response, g, Response, url_for, flash, redirect, abort
 from flask.ext.basicauth import BasicAuth
 from jinja2 import evalcontextfilter, Markup, escape
 
@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 from functools import wraps
 import models
 import settings
-import os
 import re
 
 app = Flask(__name__)
@@ -62,9 +61,6 @@ def home():
     ''' Homepage '''
     g.current_page = 'home'
     g.breadcrumb = None
-    if not os.path.exists(settings.database):
-        models.setup()
-        return "Database setup."
     boards = models.list_boards()
     return render_template('home.html', boards=boards)
 
@@ -84,12 +80,14 @@ def profile():
 @session_wrapper
 def new_thread(board_id):
     ''' Edit or post new thread '''
+    board = models.board_info(board_id)
+    if board is None:
+        abort(404)
     if request.method == 'POST':
         models.new_thread(g._user['id'], board_id, request.form['title'], request.form['content'])
         flash('发布新串成功！', 'success')
         return redirect(url_for('view_board', board_id=board_id))
     else:
-        board = models.board_info(board_id)
         g.current_page = 'view'
         g.breadcrumb = [
                 _bc('首页', url_for('home')),
@@ -103,6 +101,8 @@ def new_thread(board_id):
 def view_board(board_id):
     ''' View a board (list all threads in the board) '''
     board = models.board_info(board_id)
+    if board is None:
+        abort(404)
     threads = models.list_threads(board_id)
     g.current_page = 'view'
     g.breadcrumb = [
@@ -115,11 +115,13 @@ def view_board(board_id):
 @session_wrapper
 def thread(thread_id):
     ''' View a thread or post reply '''
+    threads = models.show_thread(thread_id)
+    board = models.get_thread_borad(thread_id)
+    if threads == [] or board is None:
+        abort(404)
     if request.method == 'POST':
         models.new_post(g._user['id'], thread_id, request.form['title'], request.form['content'])
         flash('回复成功', 'success')
-    threads = models.show_thread(thread_id)
-    board = models.get_thread_borad(thread_id)
     g.current_page = 'view'
     g.breadcrumb = [
             _bc('首页', url_for('home')),

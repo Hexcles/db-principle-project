@@ -20,7 +20,10 @@ def _get_db():
 
 def setup():
     ''' Set up database schema (force overwrite old database!) '''
-    os.unlink(settings.database)
+    try:
+        os.unlink(settings.database)
+    except Exception:
+        pass
     conn = _get_db()
     conn.execute('''
         CREATE TABLE "board"
@@ -106,6 +109,8 @@ def check_session(session):
 
 def start_session():
     ''' Start a session (check existing or generate new) '''
+    if not os.path.exists(settings.database):
+        setup()
     session = request.cookies.get('user_session')
     if session is None or not check_session(session):
         generate_session()
