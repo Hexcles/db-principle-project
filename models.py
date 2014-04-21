@@ -55,6 +55,15 @@ def setup():
              "last_ip" INTEGER NOT NULL  DEFAULT 0,
              "last_time" DATETIME NOT NULL  DEFAULT "1970-01-01 00:00:00")
     ''')
+    conn.execute('''
+        CREATE  INDEX "main"."post_thread_id" ON "post" ("thread_id" ASC)
+    ''')
+    conn.execute('''
+        CREATE  INDEX "main"."post_user_id" ON "post" ("user_id" ASC)
+    ''')
+    conn.execute('''
+        CREATE  INDEX "main"."thread_board_id" ON "thread" ("board_id" ASC)
+    ''')
     conn.commit()
 
 def generate_session():
