@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import g, request
 from datetime import datetime
 import binascii

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template, request, make_response, g, Response, url_for, flash, redirect, abort
 from flask.ext.basicauth import BasicAuth
 from jinja2 import evalcontextfilter, Markup, escape
@@ -155,4 +156,4 @@ def new_session():
 
 # Main runner
 if __name__ == '__main__':
-    app.run(debug=settings.debug, host=settings.listen_host)
+    app.run(debug=settings.debug, host=settings.listen_host, port=settings.listen_port)
